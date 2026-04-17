@@ -1,1 +1,1 @@
-# slug_generator_API
+## A simple project built with NestJS that generates URL-friendly slugs using a custom TypeScript-based slug generator library.
