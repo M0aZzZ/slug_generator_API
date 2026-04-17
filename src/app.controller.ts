@@ -1,12 +1,10 @@
 import { Controller, Get } from '@nestjs/common';
-import { AppService } from './app.service';
+import { slugify } from '@m0az/sluggenerator';
 
-@Controller()
-export class AppController {
-  constructor(private readonly appService: AppService) {}
-
+@Controller('test')
+export class TestController {
   @Get()
-  getHello(): string {
-    return this.appService.getHello();
+  testSlug() {
+    return slugify('Hello_world!');
   }
 }
