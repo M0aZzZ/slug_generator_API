@@ -1,4 +1,4 @@
-import { Injectable } from '@nestjs/common';
+import { Injectable, NotFoundException } from '@nestjs/common';
 import { slugify } from '@m0az/sluggenerator';
 import { slug } from './slug.model';
 
@@ -6,6 +6,13 @@ import { slug } from './slug.model';
 export class SlugsService {
   private slugs: slug[] = [];
 
+  ensureSlugExists(id: number) {
+    const slug = this.slugs.find((slug) => slug.id === id);
+    if (!slug) {
+      throw new NotFoundException('Slug not found');
+    }
+    return slug;
+  }
   createSlug(originalString: string): slug {
     const newSlug: slug = {
       id: this.slugs.length + 1,
@@ -18,10 +25,12 @@ export class SlugsService {
   getSlugs(): slug[] {
     return this.slugs;
   }
-  getSlugById(id: number): slug | undefined {
-    return this.slugs.find((slugs) => slugs.id === id);
+  getSlugById(id: number): slug {
+    const slug = this.ensureSlugExists(id);
+    return slug;
   }
   deleteSlug(id: number): void {
-    this.slugs = this.slugs.filter((slugs) => slugs.id !== id);
+    const slug = this.ensureSlugExists(id);
+    this.slugs = this.slugs.filter((slugs) => slugs.id !== slug.id);
   }
 }
